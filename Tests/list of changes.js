@@ -28,6 +28,7 @@ export class ListOfChanges {
     await this.room_5.click()
     await this.room_6.click()
     await this.deletion.click()
+    await this.page.waitForTimeout(2000)
     await this.pageSelection.click()
     await this.editPrice.click()
     await this.replaceSelect.click()

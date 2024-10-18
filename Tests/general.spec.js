@@ -1,10 +1,11 @@
-import {test, expect} from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { loginIn } from './login'
 import { GoToPrices } from './go to prices'
 import { Filter } from './filter'
 import { SelectionOfPremises } from './selection of premises'
 import { PriceCheck } from './price check'
 import { ListOfChanges } from './list of changes'
+import { PublicationVerification } from './publication verification'
 
 /*
 0. Логин
@@ -13,10 +14,10 @@ import { ListOfChanges } from './list of changes'
 3. Переключение на Шахматку+, выбор помещений (разными спосабами) и изменение цены. На один этаж увеличить на второй уменьшить на третий заменить
 4. Переход на шахматку и проверка цен
 5. Переход в список изменений, часть удаляется, часть редактируется, и изменяется цена на первичные значения.
-6. Публикация и проверка → (ПРОВЕРКА ЕЩЁ НЕ РЕАЛИЗОВАНА)
+6. Публикация и проверка 
 */
 
-test ('Редактор цен', async ({page}) => {
+test('Редактор цен', async ({ page }) => {
 
     test.setTimeout(180000);
 
@@ -47,5 +48,14 @@ test ('Редактор цен', async ({page}) => {
     const listOfChanges = new ListOfChanges(page)
     await listOfChanges.changesList()
     await listOfChanges.publicationPrice()
-    
+
+    const publicationVerification = new PublicationVerification(page)
+    await publicationVerification.verification_1()
+    await publicationVerification.verification_2()
+    await publicationVerification.verification_3()
+
+    const choice = await publicationVerification.verification_3()
+    await expect(choice).toHaveAttribute('data-selected', 'true') // проверка что помещения отмечены на шахматке 
+    await publicationVerification.verification_4()
+
 })
